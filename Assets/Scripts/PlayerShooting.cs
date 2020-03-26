@@ -49,13 +49,13 @@ public class PlayerShooting : MonoBehaviour
 
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         Rigidbody cartridgeRb = cartridge.GetComponent<Rigidbody>();
+
         bulletRb.AddForce(transform.forward * bulletThrust);
 
         cartridgeRb.AddForce((transform.right) * cartridgeRecoil);
 
         bulletsLeft--;
         bulletsLeftInClip--;
-        Recoil();
     }
 
     private void Reload()
@@ -76,10 +76,5 @@ public class PlayerShooting : MonoBehaviour
         bulletsLeftInClip = clipSize;
         cartridgeRecoil = cartridgeRec;
         gunRecoil = gunRec;
-    }
-
-    private void Recoil()
-    {
-        gameObject.GetComponent<Rigidbody>().AddForce(-transform.forward * gunRecoil, ForceMode.Impulse);
     }
 }

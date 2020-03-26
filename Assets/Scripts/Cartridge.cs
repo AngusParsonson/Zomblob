@@ -10,5 +10,10 @@ public class Cartridge : MonoBehaviour
         {
             Destroy(gameObject.GetComponent<Rigidbody>(), 4f);
         }
+        if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("hello");
+            //Physics.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider>());
+        }
     }
 }

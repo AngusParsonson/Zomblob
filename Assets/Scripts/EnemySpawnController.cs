@@ -28,7 +28,7 @@ public class EnemySpawnController : MonoBehaviour
     {
         if (timeSinceSpawn >= spawnInterval)
         {
-            spawnEnemy();
+            //spawnEnemy();
         }
         timeSinceSpawn += Time.deltaTime;
     }

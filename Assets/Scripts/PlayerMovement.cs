@@ -5,49 +5,52 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject floor;
+    public Animator animator;
     private Plane floorPlane;
 
     public float movementSpeed = 3f;
     public float jumpStrength = 1f;
     Rigidbody rigidBody;
-    private float cameraDif;
-    //Vector3 gunOffset;
+    Vector3 velocity;
 
     // Start is called before the first frame update
     void Start()
     {
-        //gunOffset = transform.position - transform.Find("Gun").gameObject.transform.position;
         rigidBody = gameObject.GetComponent<Rigidbody>();
-        cameraDif = Camera.main.transform.position.y - transform.position.y;
-        floorPlane = new Plane(floor.transform.up, transform.position);
+        floorPlane = new Plane(floor.transform.up, floor.transform.position);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         FaceMouse();
+        velocity = Vector3.zero;
 
         if (Input.GetKey(KeyCode.A))
         {
-            Vector3 velocity = new Vector3(-movementSpeed, 0, 0);
-            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            Vector3 velocity = new Vector3(movementSpeed, 0, 0);
-            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            Vector3 velocity = new Vector3(0, 0, movementSpeed);
-            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            Vector3 velocity = new Vector3(0, 0, -movementSpeed);
+            velocity = new Vector3(-movementSpeed, 0, 0);
             rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
         }
 
+        if (Input.GetKey(KeyCode.D))
+        {
+            velocity = new Vector3(movementSpeed, 0, 0);
+            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            velocity = new Vector3(0, 0, movementSpeed);
+            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            velocity = new Vector3(0, 0, -movementSpeed);
+            rigidBody.MovePosition(rigidBody.position + velocity * Time.fixedDeltaTime);
+        }
+
+        animator.SetFloat("Speed", velocity.sqrMagnitude);
     }
 
     private void FaceMouse()
@@ -56,7 +59,11 @@ public class PlayerMovement : MonoBehaviour
 
         if(floorPlane.Raycast(ray, out float distance))
         {
-            transform.LookAt(ray.GetPoint(distance));
+            Vector3 point = ray.GetPoint(distance);
+            point.y = transform.position.y;
+            transform.LookAt(point);
+            animator.SetFloat("Horizontal", point.x);
+            animator.SetFloat("Vertical", point.z);
         }
 
     }

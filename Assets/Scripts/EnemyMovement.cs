@@ -7,7 +7,7 @@ public class EnemyMovement : MonoBehaviour
     private Transform playerPosition;
     private Rigidbody rb;
 
-    public float movementSpeed = 1.0f;
+    public float movementSpeed;
 
     // Start is called before the first frame update
     void Start()

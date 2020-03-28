@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject floor;
-    public Animator animator;
+    private Animator animator;
     private Plane floorPlane;
 
     public float movementSpeed = 3f;
@@ -17,13 +17,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody>();
+        animator = gameObject.transform.Find("PlayerModel@Rifle Idle").GetComponent<Animator>();
         floorPlane = new Plane(floor.transform.up, floor.transform.position);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        FaceMouse();
         velocity = Vector3.zero;
 
         if (Input.GetKey(KeyCode.A))
@@ -51,9 +51,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         animator.SetFloat("Speed", velocity.sqrMagnitude);
+        FaceMouse(velocity);
     }
 
-    private void FaceMouse()
+    private void FaceMouse(Vector3 velocity)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -62,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 point = ray.GetPoint(distance);
             point.y = transform.position.y;
             transform.LookAt(point);
+            point = Vector3.Scale(velocity, point);
             animator.SetFloat("Horizontal", point.x);
             animator.SetFloat("Vertical", point.z);
         }

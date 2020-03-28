@@ -35,7 +35,7 @@ public class EnemySpawnController : MonoBehaviour
 
     private void spawnEnemy()
     {
-        Vector3 spawnPoint = new Vector3(Random.Range(xSpawnMin, xSpawnMax), 1.0f, Random.Range(zSpawnMin, zSpawnMax));
+        Vector3 spawnPoint = new Vector3(Random.Range(xSpawnMin, xSpawnMax), 1f, Random.Range(zSpawnMin, zSpawnMax));
         Instantiate(enemyPrefab, spawnPoint, transform.rotation);
         timeSinceSpawn = 0;
     }
